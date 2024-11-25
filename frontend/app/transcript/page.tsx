@@ -5,7 +5,7 @@ import type { TranscriptResponse } from "youtube-transcript";
 import { getYoutubeTranscript } from "../actions/youtube";
 
 export default function TranscriptForm() {
-	const [url, setUrl] = useState("");
+	const [url, setUrl] = useState("https://www.youtube.com/watch?v=PZ8svp68NXM");
 	const [transcript, setTranscript] = useState<TranscriptResponse[]>([]);
 	const [loading, setLoading] = useState(false);
 
