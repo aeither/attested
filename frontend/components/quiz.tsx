@@ -3,13 +3,15 @@ import { Progress } from "@/components/ui/progress";
 import type { Question } from "@/lib/schemas";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  Check,
-  ChevronLeft,
-  ChevronRight,
-  FileText,
-  RefreshCw,
-  X,
+	Check,
+	CheckCircle,
+	ChevronLeft,
+	ChevronRight,
+	FileText,
+	RefreshCw,
+	X,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import type React from "react";
 import { useEffect, useState } from "react";
 import QuizReview from "./quiz-overview";
@@ -85,6 +87,7 @@ export default function Quiz({
 	const [isSubmitted, setIsSubmitted] = useState(false);
 	const [score, setScore] = useState<number | null>(null);
 	const [progress, setProgress] = useState(0);
+	const router = useRouter();
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
@@ -206,6 +209,13 @@ export default function Quiz({
 												className="bg-primary hover:bg-primary/90 w-full"
 											>
 												<FileText className="mr-2 h-4 w-4" /> Try Another One
+											</Button>
+											<Button
+												onClick={() => router.push("/attest")}
+												variant="secondary"
+												className="bg-secondary hover:bg-secondary/90 w-full"
+											>
+												<CheckCircle className="mr-2 h-4 w-4" /> Review
 											</Button>
 										</div>
 									</div>

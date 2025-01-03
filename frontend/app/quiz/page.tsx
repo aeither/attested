@@ -1,108 +1,81 @@
 "use client";
 
+import Quiz from "@/components/quiz";
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { ArrowRight, CheckCircle, XCircle } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import type { questionsSchema } from "@/lib/schemas";
+import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
+import type { z } from "zod";
+import { generateQuizTitle } from "../actions/ai";
 
-const questions = [
-	{
-		id: 1,
-		question:
-			"What makes the ERC-1155 token standard unique compared to ERC-20 and ERC-721?",
-		options: [
-			"It only allows non-fungible tokens.",
-			"It only allows fungible tokens.",
-			"It supports both fungible and non-fungible tokens in a single contract.",
-			"It requires multiple smart contracts for each token type.",
-		],
-		correctAnswer: 2,
-	},
-	{
-		id: 2,
-		question:
-			'In the ERC-1155 example, what type of token is the "Thor\'s hammer"?',
-		options: [
-			"A fungible token",
-			"A non-fungible token (NFT)",
-			"A batch token",
-			"A fungible and non-fungible hybrid",
-		],
-		correctAnswer: 1,
-	},
-	{
-		id: 3,
-		question: "What service was used in the example to host metadata on IPFS?",
-		options: ["Infura", "MetaMask", "Pinata", "OpenZeppelin"],
-		correctAnswer: 2,
-	},
-	{
-		id: 4,
-		question:
-			'What does it mean for a token to be "soulbound" in this context?',
-		options: [
-			"It can only be transferred to specific addresses.",
-			"It is tied to the recipient and cannot be transferred.",
-			"It can be burned by any user.",
-			"It has a limited lifespan and will expire.",
-		],
-		correctAnswer: 1,
-	},
-	{
-		id: 5,
-		question:
-			"What benefit does ERC-1155 provide by supporting batch transfer and batch burning?",
-		options: [
-			"It allows tokens to be transferred without gas fees.",
-			"It reduces the code size of the contract.",
-			"It allows multiple tokens to be managed in one transaction, saving on gas fees.",
-			"It increases token security during transfers.",
-		],
-		correctAnswer: 2,
-	},
-];
 
-export default function Quiz() {
-	const [currentQuestion, setCurrentQuestion] = useState(0);
-	const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-	const [showResult, setShowResult] = useState(false);
-	const [score, setScore] = useState(0);
+export default function QuizPage() {
+	const [text, setText] = useState<string>("");
+	const [questions, setQuestions] = useState<z.infer<typeof questionsSchema>>(
+		[],
+	);
+	const [title, setTitle] = useState<string>();
+	const [isLoading, setIsLoading] = useState(false);
+	const [progress, setProgress] = useState(0);
+	const [partialQuestions, setPartialQuestions] = useState<
+		z.infer<typeof questionsSchema>
+	>([]);
 
-	const handleAnswer = (answerIndex: number) => {
-		setSelectedAnswer(answerIndex);
-		if (answerIndex === questions[currentQuestion].correctAnswer) {
-			setScore(score + 1);
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		if (!text.trim()) {
+			toast.error("Please enter some text");
+			return;
+		}
+
+		setIsLoading(true);
+		try {
+			const options = {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ text }),
+			};
+
+			const response = await fetch("/api/generate-quiz", options);
+			if (!response.ok) throw new Error("Failed to generate quiz");
+
+			const data = await response.json();
+			setQuestions(data);
+
+			const generatedTitle = await generateQuizTitle("Custom Quiz");
+			setTitle(generatedTitle);
+		} catch (error) {
+			console.error(error);
+			toast.error("Failed to generate quiz. Please try again.");
+			setText("");
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
-	const handleNext = () => {
-		if (currentQuestion < questions.length - 1) {
-			setCurrentQuestion(currentQuestion + 1);
-			setSelectedAnswer(null);
-		} else {
-			setShowResult(true);
-		}
-	};
-
-	const resetQuiz = () => {
-		setCurrentQuestion(0);
-		setSelectedAnswer(null);
-		setShowResult(false);
-		setScore(0);
+	const clearText = () => {
+		setText("");
+		setQuestions([]);
+		setProgress(0);
+		setPartialQuestions([]);
 	};
 
 	return (
 		<div className="container max-w-3xl mx-auto px-4 py-8">
+			{/* YouTube Section */}
 			<Card className="mb-8">
 				<CardHeader>
 					<CardTitle>How To Create an ERC-1155 Contract</CardTitle>
@@ -125,91 +98,68 @@ export default function Quiz() {
 				</CardContent>
 			</Card>
 
-			<Card>
-				<CardHeader>
-					<div className="flex items-center justify-between">
-						<div>
-							<CardTitle>Knowledge Check</CardTitle>
-							<CardDescription>
-								Test your understanding of ERC-1155 tokens
-							</CardDescription>
-						</div>
-						<div className="text-right">
-							<p className="text-sm text-muted-foreground">
-								Question {currentQuestion + 1} of {questions.length}
-							</p>
-							<Progress
-								value={(currentQuestion / questions.length) * 100}
-								className="w-[200px]"
+			{/* Quiz Section */}
+			{questions.length > 0 ? (
+				<Quiz
+					title={title ?? "Quiz"}
+					questions={questions}
+					clearPDF={clearText}
+				/>
+			) : (
+				<Card>
+					<CardHeader>
+						<CardTitle>Knowledge Check</CardTitle>
+						<CardDescription>
+							Test your knowledge
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<form onSubmit={handleSubmit} className="space-y-4">
+							<Textarea
+								value={text}
+								onChange={(e) => setText(e.target.value)}
+								placeholder="Enter your text here..."
+								className="min-h-[200px] resize-none"
 							/>
-						</div>
-					</div>
-				</CardHeader>
-				<CardContent>
-					{!showResult ? (
-						<div className="space-y-4">
-							<p className="text-lg font-medium">
-								{questions[currentQuestion].question}
-							</p>
-							<RadioGroup
-								onValueChange={(value) => handleAnswer(Number.parseInt(value))}
-							>
-								{questions[currentQuestion].options.map((option, index) => (
-									<div key={index} className="flex items-center space-x-2">
-										<RadioGroupItem
-											value={index.toString()}
-											id={`option-${index}`}
-											checked={selectedAnswer === index}
-										/>
-										<Label
-											htmlFor={`option-${index}`}
-											className="flex-grow p-4 cursor-pointer"
-										>
-											{option}
-										</Label>
-										{selectedAnswer === index &&
-											(index === questions[currentQuestion].correctAnswer ? (
-												<CheckCircle className="w-5 h-5 text-green-500" />
-											) : (
-												<XCircle className="w-5 h-5 text-red-500" />
-											))}
-									</div>
-								))}
-							</RadioGroup>
-						</div>
-					) : (
-						<div className="text-center space-y-4">
-							<h3 className="text-2xl font-bold">Quiz Complete!</h3>
-							<p className="text-xl">
-								Your score: {score} out of {questions.length}
-							</p>
-							<p className="text-muted-foreground">
-								{score === questions.length
-									? "Perfect score! Great job!"
-									: "Keep learning and try again!"}
-							</p>
-						</div>
-					)}
-				</CardContent>
-				<CardFooter className="flex justify-end">
-					{!showResult ? (
-						<Button onClick={handleNext} disabled={selectedAnswer === null}>
-							{currentQuestion === questions.length - 1 ? "Finish" : "Next"}
-							<ArrowRight className="ml-2 w-4 h-4" />
-						</Button>
-					) : (
-						<>
-							<div className="flex flex-row gap-2">
-								<a href="/attest">
-									<Button>Open Review</Button>
-								</a>
-
-								<Button onClick={resetQuiz}>Try Again</Button>
+							<Button type="submit" className="w-full" disabled={!text.trim()}>
+								{isLoading ? (
+									<span className="flex items-center space-x-2">
+										<Loader2 className="h-4 w-4 animate-spin" />
+										<span>Generating Quiz...</span>
+									</span>
+								) : (
+									"Generate Quiz"
+								)}
+							</Button>
+						</form>
+					</CardContent>
+					{isLoading && (
+						<CardFooter className="flex flex-col space-y-4">
+							<div className="w-full space-y-1">
+								<div className="flex justify-between text-sm text-muted-foreground">
+									<span>Progress</span>
+									<span>{Math.round(progress)}%</span>
+								</div>
+								<Progress value={progress} className="h-2" />
 							</div>
-						</>
+							<div className="w-full space-y-2">
+								<div className="grid grid-cols-6 sm:grid-cols-4 items-center space-x-2 text-sm">
+									<div
+										className={`h-2 w-2 rounded-full ${
+											isLoading ? "bg-yellow-500/50 animate-pulse" : "bg-muted"
+										}`}
+									/>
+									<span className="text-muted-foreground text-center col-span-4 sm:col-span-2">
+										{partialQuestions
+											? `Generating question ${partialQuestions.length + 1} of 4`
+											: "Analyzing text content"}
+									</span>
+								</div>
+							</div>
+						</CardFooter>
 					)}
-				</CardFooter>
-			</Card>
+				</Card>
+			)}
 		</div>
 	);
 }

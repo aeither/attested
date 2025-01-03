@@ -50,7 +50,6 @@ export default function ChatWithText() {
 			if (!response.ok) throw new Error("Failed to generate quiz");
 
 			const data = await response.json();
-			console.log("🚀 ~ handleSubmit ~ data:", data)
 			setQuestions(data);
 
 			const generatedTitle = await generateQuizTitle("Custom Quiz");
