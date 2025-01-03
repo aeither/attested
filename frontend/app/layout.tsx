@@ -1,4 +1,5 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { CourseSidebar } from "@/components/course-sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Providers } from "@/lib/providers";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -32,7 +33,12 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
 				<Providers>
-					<SidebarProvider>{children}</SidebarProvider>
+					<SidebarProvider>
+						<CourseSidebar />
+						<SidebarInset>
+							{children}
+						</SidebarInset>
+					</SidebarProvider>
 				</Providers>
 				<Toaster />
 			</body>
