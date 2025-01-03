@@ -10,8 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
-import { questionsSchema } from "@/lib/schemas";
-import { experimental_useObject } from "ai/react";
+import type { questionsSchema } from "@/lib/schemas";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -24,24 +23,11 @@ export default function ChatWithText() {
 		[],
 	);
 	const [title, setTitle] = useState<string>();
-
-	const {
-		submit,
-		object: partialQuestions,
-		isLoading,
-	} = experimental_useObject({
-		api: "/api/generate-quiz",
-		schema: questionsSchema,
-		initialValue: undefined,
-		onError: (error) => {
-			console.log(error)
-			toast.error("Failed to generate quiz. Please try again.");
-			setText("");
-		},
-		onFinish: ({ object }) => {
-			setQuestions(object ?? []);
-		},
-	});
+	const [isLoading, setIsLoading] = useState(false);
+	const [progress, setProgress] = useState(0);
+	const [partialQuestions, setPartialQuestions] = useState<
+		z.infer<typeof questionsSchema>
+	>([]);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -49,17 +35,51 @@ export default function ChatWithText() {
 			toast.error("Please enter some text");
 			return;
 		}
-		submit({ text });
-		const generatedTitle = await generateQuizTitle("Custom Quiz");
-		setTitle(generatedTitle);
+
+		setIsLoading(true);
+		try {
+			// const options = {
+			// 	method: "POST",
+			// 	headers: { "Content-Type": "application/json" },
+			// 	body: '{"text":"hello"}',
+			// };
+
+			// fetch("http://localhost:3000/api/generate-quiz", options)
+			// 	.then((response) => response.json())
+			// 	.then((response) => console.log(response))
+			// 	.catch((err) => console.error(err));
+			const options = {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ text }),
+			};
+
+			const response = await fetch("/api/generate-quiz", options);
+			if (!response.ok) throw new Error("Failed to generate quiz");
+
+			const data = await response.json();
+			console.log("🚀 ~ handleSubmit ~ data:", data)
+			setQuestions(data);
+
+			const generatedTitle = await generateQuizTitle("Custom Quiz");
+			setTitle(generatedTitle);
+		} catch (error) {
+			console.error(error);
+			toast.error("Failed to generate quiz. Please try again.");
+			setText("");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const clearText = () => {
 		setText("");
 		setQuestions([]);
+		setProgress(0);
+		setPartialQuestions([]);
 	};
-
-	const progress = partialQuestions ? (partialQuestions.length / 4) * 100 : 0;
 
 	if (questions.length === 4) {
 		return (
