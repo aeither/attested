@@ -3,10 +3,10 @@
 import Quiz from "@/components/quiz";
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
+	Card,
+	CardContent,
+	CardFooter,
+	CardHeader,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
@@ -34,6 +34,7 @@ export default function ChatWithText() {
 		schema: questionsSchema,
 		initialValue: undefined,
 		onError: (error) => {
+			console.log(error)
 			toast.error("Failed to generate quiz. Please try again.");
 			setText("");
 		},

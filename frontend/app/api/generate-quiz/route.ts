@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 	const { text } = await req.json();
 
 	const result = streamObject({
-		model: groq("llama-3.1-70b-versatile"),
+		model: groq("llama-3.3-70b-versatile"),
 		messages: [
 			{
 				role: "system",

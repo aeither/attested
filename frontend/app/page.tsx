@@ -74,7 +74,7 @@ export default function SkillsDiscoveryPage() {
 						{filteredSkills.map((skill) => (
 							<div
 								key={skill.id}
-								className="bg-card text-card-foreground rounded-lg shadow-md overflow-hidden flex flex-col h-full" // Added flex container styles
+								className="bg-card text-card-foreground rounded-lg shadow-md overflow-hidden flex flex-col h-full"
 							>
 								<div className="p-4 flex flex-col h-full">
 									<div className="flex-grow">
@@ -89,7 +89,9 @@ export default function SkillsDiscoveryPage() {
 										</p>
 									</div>
 									<div className="flex items-center gap-2 mt-auto">
-										<a href="/submit">
+										<a
+											href={`/submit?course=${encodeURIComponent(skill.name)}`}
+										>
 											<Button variant="outline" className="w-full">
 												<BookOpen className="mr-2 h-4 w-4" />
 												Start Learning

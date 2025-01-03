@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@ai-sdk/groq':
-        specifier: ^1.0.3
-        version: 1.0.3(zod@3.23.8)
+        specifier: ^1.0.9
+        version: 1.0.9(zod@3.23.8)
       '@radix-ui/react-avatar':
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -48,8 +48,8 @@ importers:
         specifier: ^5.61.3
         version: 5.61.3(react@18.3.1)
       ai:
-        specifier: ^4.0.3
-        version: 4.0.3(react@18.3.1)(zod@3.23.8)
+        specifier: ^4.0.24
+        version: 4.0.24(react@18.3.1)(zod@3.23.8)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -129,14 +129,14 @@ packages:
   '@adraffy/ens-normalize@1.11.0':
     resolution: {integrity: sha512-/3DDPKHqqIqxUULp8yP4zODUY1i+2xvVWsv8A79xGWdCAG+8sb0hRh0Rk2QyOJUnnbyPUAZYcpBuRe3nS2OIUg==}
 
-  '@ai-sdk/groq@1.0.3':
-    resolution: {integrity: sha512-RBbcQu+XyZ+ytYT74LrDwxySsOakfO7oAikDsXedYeYD6d9eb6xQNWbPUL5Mjj8EOfx5eHllgz3mYa39Aqzg4w==}
+  '@ai-sdk/groq@1.0.9':
+    resolution: {integrity: sha512-FmvurMYRC6cCtQEZYUiqoMyLumOFzV6mYqj/iEkInVH2D7SQMXQZwsaLVU/JbVWA/Vf7nLvRnP+TPbrC7Jh7Fw==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.0.0
 
-  '@ai-sdk/provider-utils@2.0.2':
-    resolution: {integrity: sha512-IAvhKhdlXqiSmvx/D4uNlFYCl8dWT+M9K+IuEcSgnE2Aj27GWu8sDIpAf4r4Voc+wOUkOECVKQhFo8g9pozdjA==}
+  '@ai-sdk/provider-utils@2.0.5':
+    resolution: {integrity: sha512-2M7vLhYN0ThGjNlzow7oO/lsL+DyMxvGMIYmVQvEYaCWhDzxH5dOp78VNjJIVwHzVLMbBDigX3rJuzAs853idw==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.0.0
@@ -144,12 +144,12 @@ packages:
       zod:
         optional: true
 
-  '@ai-sdk/provider@1.0.1':
-    resolution: {integrity: sha512-mV+3iNDkzUsZ0pR2jG0sVzU6xtQY5DtSCBy3JFycLp6PwjyLw/iodfL3MwdmMCRJWgs3dadcHejRnMvF9nGTBg==}
+  '@ai-sdk/provider@1.0.3':
+    resolution: {integrity: sha512-WiuJEpHTrltOIzv3x2wx4gwksAHW0h6nK3SoDzjqCOJLu/2OJ1yASESTIX+f07ChFykHElVoP80Ol/fe9dw6tQ==}
     engines: {node: '>=18'}
 
-  '@ai-sdk/react@1.0.2':
-    resolution: {integrity: sha512-VQfQ6PMiUz4hDquAfjih0DIw4gsQvRFk91SFg2xWirDO4swMZByJzqGGcILPQKbww5ndCo48iZj9S1mLKZo5Dg==}
+  '@ai-sdk/react@1.0.7':
+    resolution: {integrity: sha512-j2/of4iCNq+r2Bjx0O9vdRhn5C/02t2Esenis71YtnsoynPz74eQlJ3N0RYYPheThiJes50yHdfdVdH9ulxs1A==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ^19 || ^19.0.0-rc
@@ -160,8 +160,8 @@ packages:
       zod:
         optional: true
 
-  '@ai-sdk/ui-utils@1.0.2':
-    resolution: {integrity: sha512-hHrUdeThGHu/rsGZBWQ9PjrAU9Htxgbo9MFyR5B/aWoNbBeXn1HLMY1+uMEnXL5pRPlmyVRjgIavWg7UgeNDOw==}
+  '@ai-sdk/ui-utils@1.0.6':
+    resolution: {integrity: sha512-ZP6Vjj+VCnSPBIAvWAdKj2olQONJ/f4aZpkVCGkzprdhv8TjHwB6CTlXFS3zypuEGy4asg84dc1dvXKooQXFvg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.0.0
@@ -2298,8 +2298,8 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
-  ai@4.0.3:
-    resolution: {integrity: sha512-nx5cNMldOQ72hwxL60NLtRnsmQd5Bo887Wznvxt8F5xnmjdeXRpz4ixp+0xGA88X7wiCn6c+xrhGEb9fesi/Tw==}
+  ai@4.0.24:
+    resolution: {integrity: sha512-Fh33gspTNdevLx3Ggc3IqmnVxrpADGZwaFteEVRSjvJUraEdb8GDQZLqMGRcBr0/sKk7tPQeekiSBw3nQb8PZQ==}
     engines: {node: '>=18'}
     peerDependencies:
       react: ^18 || ^19 || ^19.0.0-rc
@@ -4058,6 +4058,11 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  nanoid@3.3.8:
+    resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
+    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
@@ -5468,39 +5473,39 @@ snapshots:
 
   '@adraffy/ens-normalize@1.11.0': {}
 
-  '@ai-sdk/groq@1.0.3(zod@3.23.8)':
+  '@ai-sdk/groq@1.0.9(zod@3.23.8)':
     dependencies:
-      '@ai-sdk/provider': 1.0.1
-      '@ai-sdk/provider-utils': 2.0.2(zod@3.23.8)
+      '@ai-sdk/provider': 1.0.3
+      '@ai-sdk/provider-utils': 2.0.5(zod@3.23.8)
       zod: 3.23.8
 
-  '@ai-sdk/provider-utils@2.0.2(zod@3.23.8)':
+  '@ai-sdk/provider-utils@2.0.5(zod@3.23.8)':
     dependencies:
-      '@ai-sdk/provider': 1.0.1
+      '@ai-sdk/provider': 1.0.3
       eventsource-parser: 3.0.0
-      nanoid: 3.3.7
+      nanoid: 3.3.8
       secure-json-parse: 2.7.0
     optionalDependencies:
       zod: 3.23.8
 
-  '@ai-sdk/provider@1.0.1':
+  '@ai-sdk/provider@1.0.3':
     dependencies:
       json-schema: 0.4.0
 
-  '@ai-sdk/react@1.0.2(react@18.3.1)(zod@3.23.8)':
+  '@ai-sdk/react@1.0.7(react@18.3.1)(zod@3.23.8)':
     dependencies:
-      '@ai-sdk/provider-utils': 2.0.2(zod@3.23.8)
-      '@ai-sdk/ui-utils': 1.0.2(zod@3.23.8)
+      '@ai-sdk/provider-utils': 2.0.5(zod@3.23.8)
+      '@ai-sdk/ui-utils': 1.0.6(zod@3.23.8)
       swr: 2.2.5(react@18.3.1)
       throttleit: 2.1.0
     optionalDependencies:
       react: 18.3.1
       zod: 3.23.8
 
-  '@ai-sdk/ui-utils@1.0.2(zod@3.23.8)':
+  '@ai-sdk/ui-utils@1.0.6(zod@3.23.8)':
     dependencies:
-      '@ai-sdk/provider': 1.0.1
-      '@ai-sdk/provider-utils': 2.0.2(zod@3.23.8)
+      '@ai-sdk/provider': 1.0.3
+      '@ai-sdk/provider-utils': 2.0.5(zod@3.23.8)
       zod-to-json-schema: 3.23.5(zod@3.23.8)
     optionalDependencies:
       zod: 3.23.8
@@ -8286,12 +8291,12 @@ snapshots:
 
   acorn@8.14.0: {}
 
-  ai@4.0.3(react@18.3.1)(zod@3.23.8):
+  ai@4.0.24(react@18.3.1)(zod@3.23.8):
     dependencies:
-      '@ai-sdk/provider': 1.0.1
-      '@ai-sdk/provider-utils': 2.0.2(zod@3.23.8)
-      '@ai-sdk/react': 1.0.2(react@18.3.1)(zod@3.23.8)
-      '@ai-sdk/ui-utils': 1.0.2(zod@3.23.8)
+      '@ai-sdk/provider': 1.0.3
+      '@ai-sdk/provider-utils': 2.0.5(zod@3.23.8)
+      '@ai-sdk/react': 1.0.7(react@18.3.1)(zod@3.23.8)
+      '@ai-sdk/ui-utils': 1.0.6(zod@3.23.8)
       '@opentelemetry/api': 1.9.0
       jsondiffpatch: 0.6.0
       zod-to-json-schema: 3.23.5(zod@3.23.8)
@@ -10436,6 +10441,8 @@ snapshots:
       thenify-all: 1.6.0
 
   nanoid@3.3.7: {}
+
+  nanoid@3.3.8: {}
 
   natural-compare@1.4.0: {}
 
