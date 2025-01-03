@@ -3,24 +3,25 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { CheckCircle, Eye, Upload, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 // Mock data for skills
@@ -32,28 +33,37 @@ const skills = [
 	{ id: 5, name: "Cloud Computing Essentials" },
 ];
 
-export default function SkillSubmissionPage() {
-	const [selectedSkill, setSelectedSkill] = useState("");
-	const [description, setDescription] = useState("");
-	const [file, setFile] = useState<File | null>(null);
-	const [link, setLink] = useState("");
-	const [previewMode, setPreviewMode] = useState(false);
-
+// Extracted SubmissionForm component
+const SubmissionForm = ({
+	selectedSkill,
+	setSelectedSkill,
+	description,
+	setDescription,
+	link,
+	setLink,
+	file,
+	setFile,
+	setPreviewMode,
+	handleSubmit,
+}: {
+	selectedSkill: string;
+	setSelectedSkill: (skill: string) => void;
+	description: string;
+	setDescription: (desc: string) => void;
+	link: string;
+	setLink: (link: string) => void;
+	file: File | null;
+	setFile: (file: File | null) => void;
+	setPreviewMode: (mode: boolean) => void;
+	handleSubmit: (event: React.FormEvent) => void;
+}) => {
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files?.[0]) {
 			setFile(event.target.files[0]);
 		}
 	};
 
-	const handleSubmit = (event: React.FormEvent) => {
-		event.preventDefault();
-		// Here you would typically send the data to your backend
-		console.log("Submitting:", { selectedSkill, description, file, link });
-		// Push to /attest page
-		window.location.href = '/quiz';
-	};
-
-	const SubmissionForm = () => (
+	return (
 		<form onSubmit={handleSubmit} className="space-y-6">
 			<div className="space-y-2">
 				<Label htmlFor="skill">Skill</Label>
@@ -119,42 +129,75 @@ export default function SkillSubmissionPage() {
 			</div>
 		</form>
 	);
+};
 
-	const SubmissionPreview = () => (
-		<Card>
-			<CardHeader>
-				<CardTitle>Submission Preview</CardTitle>
-				<CardDescription>Review your submission before sending</CardDescription>
-			</CardHeader>
-			<CardContent className="space-y-4">
-				<div>
-					<span className="font-semibold">Skill:</span> {selectedSkill}
-				</div>
-				<div>
-					<span className="font-semibold">Description:</span>
-					<p className="mt-1">{description}</p>
-				</div>
-				<div>
-					<span className="font-semibold">File:</span>{" "}
-					{file ? file.name : "No file uploaded"}
-				</div>
-				<div>
-					<span className="font-semibold">Link:</span>{" "}
-					{link || "No link provided"}
-				</div>
-			</CardContent>
-			<CardFooter className="justify-between">
-				<Button variant="outline" onClick={() => setPreviewMode(false)}>
-					<X className="mr-2 h-4 w-4" />
-					Edit
-				</Button>
-				<Button onClick={handleSubmit}>
-					<CheckCircle className="mr-2 h-4 w-4" />
-					Confirm & Submit
-				</Button>
-			</CardFooter>
-		</Card>
-	);
+// Extracted SubmissionPreview component
+const SubmissionPreview = ({
+	selectedSkill,
+	description,
+	file,
+	link,
+	setPreviewMode,
+	handleSubmit,
+}: {
+	selectedSkill: string;
+	description: string;
+	file: File | null;
+	link: string;
+	setPreviewMode: (mode: boolean) => void;
+	handleSubmit: (event: React.FormEvent) => void;
+}) => (
+	<Card>
+		<CardHeader>
+			<CardTitle>Submission Preview</CardTitle>
+			<CardDescription>Review your submission before sending</CardDescription>
+		</CardHeader>
+		<CardContent className="space-y-4">
+			<div>
+				<span className="font-semibold">Skill:</span> {selectedSkill}
+			</div>
+			<div>
+				<span className="font-semibold">Description:</span>
+				<p className="mt-1">{description}</p>
+			</div>
+			<div>
+				<span className="font-semibold">File:</span>{" "}
+				{file ? file.name : "No file uploaded"}
+			</div>
+			<div>
+				<span className="font-semibold">Link:</span>{" "}
+				{link || "No link provided"}
+			</div>
+		</CardContent>
+		<CardFooter className="justify-between">
+			<Button variant="outline" onClick={() => setPreviewMode(false)}>
+				<X className="mr-2 h-4 w-4" />
+				Edit
+			</Button>
+			<Button onClick={handleSubmit}>
+				<CheckCircle className="mr-2 h-4 w-4" />
+				Confirm & Submit
+			</Button>
+		</CardFooter>
+	</Card>
+);
+
+export default function SkillSubmissionPage() {
+	const [selectedSkill, setSelectedSkill] = useState("");
+	const [description, setDescription] = useState("");
+	const [file, setFile] = useState<File | null>(null);
+	const [link, setLink] = useState("");
+	const [previewMode, setPreviewMode] = useState(false);
+	const router = useRouter();
+
+	const handleSubmit = (event: React.FormEvent) => {
+		event.preventDefault();
+		const params = new URLSearchParams({
+			skill: selectedSkill,
+			description: description,
+		});
+		router.push(`/quiz?${params.toString()}`);
+	};
 
 	return (
 		<div className="container mx-auto px-4 py-8">
@@ -185,7 +228,29 @@ export default function SkillSubmissionPage() {
 				</AlertDescription>
 			</Alert>
 
-			{previewMode ? <SubmissionPreview /> : <SubmissionForm />}
+			{previewMode ? (
+				<SubmissionPreview
+					selectedSkill={selectedSkill}
+					description={description}
+					file={file}
+					link={link}
+					setPreviewMode={setPreviewMode}
+					handleSubmit={handleSubmit}
+				/>
+			) : (
+				<SubmissionForm
+					selectedSkill={selectedSkill}
+					setSelectedSkill={setSelectedSkill}
+					description={description}
+					setDescription={setDescription}
+					link={link}
+					setLink={setLink}
+					file={file}
+					setFile={setFile}
+					setPreviewMode={setPreviewMode}
+					handleSubmit={handleSubmit}
+				/>
+			)}
 		</div>
 	);
 }
