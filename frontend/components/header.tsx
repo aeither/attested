@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { Separator } from "@radix-ui/react-separator";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 import MobileMenu from "./mobile-menu";
 import SearchInput from "./search-input";
@@ -34,8 +34,8 @@ export function Header({ searchTerm, onSearchChange }: HeaderProps) {
 							onSearchChange={onSearchChange}
 							className="w-full max-w-xs"
 						/>
-						<Button>Connect Wallet</Button>
 					</div>
+					<ConnectButton label="Connect" />
 				</div>
 			</div>
 		</header>
