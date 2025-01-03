@@ -1,17 +1,11 @@
 "use client";
 
+import { Header } from "@/components/header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import { BookOpen, Search, Youtube } from "lucide-react";
+import { Progress } from "@radix-ui/react-progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select";
+import { BookOpen, Youtube } from "lucide-react";
 import { useState } from "react";
 
 // Mock data for skills
@@ -74,26 +68,8 @@ export default function SkillsDiscoveryPage() {
 
 	return (
 		<div className="flex flex-col h-screen">
-			<header className="bg-[#151BEA] text-primary-foreground p-4">
-				<div className="container mx-auto flex items-center justify-between">
-					<h1 className="text-2xl font-bold text-[#00EEBD]">AttestEd</h1>
-
-					<div className="flex flex-row gap-2">
-						<div className="relative w-1/3">
-							<Input
-								type="search"
-								placeholder="Search skills..."
-								className="pl-10 text-white"
-								value={searchTerm}
-								onChange={(e) => setSearchTerm(e.target.value)}
-							/>
-							<Search className="absolute left-3 top-1/2 transform -translate-y-1/2" />
-						</div>
-						<Button>Connect Wallet</Button>
-					</div>
-				</div>
-			</header>
-
+			<Header searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+			{/* Rest of your component remains the same */}
 			<div className="flex flex-1 overflow-hidden">
 				<aside className="w-64 bg-muted p-4 overflow-y-auto">
 					<h2 className="font-semibold mb-2">Categories</h2>
@@ -167,7 +143,7 @@ export default function SkillsDiscoveryPage() {
 						))}
 					</div>
 				</main>
-			</div>
+			</div>{" "}
 		</div>
 	);
 }
