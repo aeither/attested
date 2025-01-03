@@ -1,8 +1,9 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Separator } from "@radix-ui/react-separator";
+import Link from "next/link";
+import MobileMenu from "./mobile-menu";
+import SearchInput from "./search-input";
+import { SidebarTrigger } from "./ui/sidebar";
 
 interface HeaderProps {
 	searchTerm: string;
@@ -11,22 +12,30 @@ interface HeaderProps {
 
 export function Header({ searchTerm, onSearchChange }: HeaderProps) {
 	return (
-		<header className="bg-[#151BEA] text-primary-foreground p-4">
-			<div className="container mx-auto flex items-center justify-between">
-				<h1 className="text-2xl font-bold text-[#00EEBD]">AttestEd</h1>
-
-				<div className="flex flex-row gap-2">
-					<div className="relative w-1/3">
-						<Input
-							type="search"
-							placeholder="Search skills..."
-							className="pl-10 text-white"
-							value={searchTerm}
-							onChange={(e) => onSearchChange(e.target.value)}
-						/>
-						<Search className="absolute left-3 top-1/2 transform -translate-y-1/2" />
+		<header className="bg-white shadow-sm">
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div className="flex justify-between items-center py-4 md:justify-start md:space-x-10">
+					<div className="flex justify-start lg:w-0 lg:flex-1">
+						<SidebarTrigger className="-ml-1" />
+						<Separator orientation="vertical" className="mr-2 h-4" />
+						<Link href="/" className="text-2xl font-bold text-primary">
+							Learn
+						</Link>
 					</div>
-					<Button>Connect Wallet</Button>
+					<div className="-mr-2 -my-2 md:hidden">
+						<MobileMenu
+							searchTerm={searchTerm}
+							onSearchChange={onSearchChange}
+						/>
+					</div>
+					<div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0 space-x-4">
+						<SearchInput
+							searchTerm={searchTerm}
+							onSearchChange={onSearchChange}
+							className="w-full max-w-xs"
+						/>
+						<Button>Connect Wallet</Button>
+					</div>
 				</div>
 			</div>
 		</header>
