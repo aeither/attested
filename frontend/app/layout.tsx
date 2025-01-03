@@ -3,6 +3,7 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Providers } from "@/lib/providers";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Toaster } from "sonner";
 import "./globals.css";
 
@@ -36,7 +37,7 @@ export default function RootLayout({
 					<SidebarProvider>
 						<CourseSidebar />
 						<SidebarInset>
-							{children}
+							<NuqsAdapter>{children}</NuqsAdapter>
 						</SidebarInset>
 					</SidebarProvider>
 				</Providers>

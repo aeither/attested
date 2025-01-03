@@ -14,14 +14,15 @@ import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import type { questionsSchema } from "@/lib/schemas";
 import { Loader2 } from "lucide-react";
+import { useQueryState } from "nuqs";
 import { useState } from "react";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { generateQuizTitle } from "../actions/ai";
 
-
 export default function QuizPage() {
-	const [text, setText] = useState<string>("");
+	const [description] = useQueryState("description");
+	const [text, setText] = useState<string>(description ?? "");
 	const [questions, setQuestions] = useState<z.infer<typeof questionsSchema>>(
 		[],
 	);
@@ -109,9 +110,7 @@ export default function QuizPage() {
 				<Card>
 					<CardHeader>
 						<CardTitle>Knowledge Check</CardTitle>
-						<CardDescription>
-							Test your knowledge
-						</CardDescription>
+						<CardDescription>Test your knowledge</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<form onSubmit={handleSubmit} className="space-y-4">
