@@ -48,8 +48,10 @@ anvil
 ### Deploy
 
 ```shell
-forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+source .env && forge script --chain 656476 script/Attested.s.sol:DeployScript --rpc-url https://rpc.open-campus-codex.gelato.digital --broadcast -vvvv --legacy --skip-simulation
 ```
+
+
 
 ### Cast
 
