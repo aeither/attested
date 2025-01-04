@@ -21,17 +21,13 @@ contract DeployScript is Script {
         reviewers[1] = 0x2345678901234567890123456789012345678901;
         reviewers[2] = 0x3456789012345678901234567890123456789012;
 
-        for (uint i = 0; i < reviewers.length; i++) {
+        for (uint256 i = 0; i < reviewers.length; i++) {
             attestEd.addReviewer(reviewers[i]);
             console.log("Added reviewer:", reviewers[i]);
         }
 
         // Create initial skill
-        attestEd.createSkill(
-            "Solidity Development",
-            "Advanced smart contract development",
-            3
-        );
+        attestEd.createSkill("Solidity Development", "Advanced smart contract development", 3);
         console.log("Initial skill created");
 
         vm.stopBroadcast();

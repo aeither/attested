@@ -23,7 +23,7 @@ contract AttestEdTest is Test {
         reviewer2 = makeAddr("reviewer2");
         reviewer3 = makeAddr("reviewer3");
         learner = makeAddr("learner");
-        
+
         attestEd = new AttestEd();
     }
 
@@ -35,14 +35,10 @@ contract AttestEdTest is Test {
     function test_CreateSkill() public {
         vm.expectEmit(true, false, false, true);
         emit SkillCreated(1, "Solidity Development");
-        
-        attestEd.createSkill(
-            "Solidity Development",
-            "Advanced smart contract development",
-            3
-        );
 
-        (string memory name, string memory description, , uint256 requiredAttestations, bool isActive) = 
+        attestEd.createSkill("Solidity Development", "Advanced smart contract development", 3);
+
+        (string memory name, string memory description,, uint256 requiredAttestations, bool isActive) =
             attestEd.skills(1);
 
         assertEq(name, "Solidity Development");
@@ -65,16 +61,12 @@ contract AttestEdTest is Test {
 
     function test_RequestAttestation() public {
         // Create skill first
-        attestEd.createSkill(
-            "Solidity Development",
-            "Advanced smart contract development",
-            3
-        );
+        attestEd.createSkill("Solidity Development", "Advanced smart contract development", 3);
 
         vm.prank(learner);
         vm.expectEmit(true, true, false, true);
         emit AttestationRequested(learner, 1);
-        
+
         attestEd.requestAttestation(1, "evidence-uri");
 
         (uint256 attestationCount, bool isCertified,) = attestEd.getAttestationStatus(learner, 1);
@@ -84,12 +76,8 @@ contract AttestEdTest is Test {
 
     function test_ProvideAttestation() public {
         // Setup
-        attestEd.createSkill(
-            "Solidity Development",
-            "Advanced smart contract development",
-            3
-        );
-        
+        attestEd.createSkill("Solidity Development", "Advanced smart contract development", 3);
+
         attestEd.addReviewer(reviewer1);
         attestEd.addReviewer(reviewer2);
         attestEd.addReviewer(reviewer3);
@@ -109,12 +97,8 @@ contract AttestEdTest is Test {
 
     function test_CompleteCertification() public {
         // Setup
-        attestEd.createSkill(
-            "Solidity Development",
-            "Advanced smart contract development",
-            3
-        );
-        
+        attestEd.createSkill("Solidity Development", "Advanced smart contract development", 3);
+
         attestEd.addReviewer(reviewer1);
         attestEd.addReviewer(reviewer2);
         attestEd.addReviewer(reviewer3);
@@ -125,18 +109,17 @@ contract AttestEdTest is Test {
         // Provide three attestations
         vm.prank(reviewer1);
         attestEd.provideAttestation(learner, 1);
-        
+
         vm.prank(reviewer2);
         attestEd.provideAttestation(learner, 1);
-        
+
         vm.prank(reviewer3);
         vm.expectEmit(true, true, false, true);
         emit CertificateIssued(learner, 1, 1);
         attestEd.provideAttestation(learner, 1);
 
-        (uint256 attestationCount, bool isCertified, uint256 tokenId) = 
-            attestEd.getAttestationStatus(learner, 1);
-        
+        (uint256 attestationCount, bool isCertified, uint256 tokenId) = attestEd.getAttestationStatus(learner, 1);
+
         assertEq(attestationCount, 3);
         assertTrue(isCertified);
         assertEq(tokenId, 1);
@@ -149,11 +132,7 @@ contract AttestEdTest is Test {
     }
 
     function testFail_AttestationByNonReviewer() public {
-        attestEd.createSkill(
-            "Solidity Development",
-            "Advanced smart contract development",
-            3
-        );
+        attestEd.createSkill("Solidity Development", "Advanced smart contract development", 3);
 
         vm.prank(learner);
         attestEd.requestAttestation(1, "evidence-uri");
@@ -163,12 +142,8 @@ contract AttestEdTest is Test {
     }
 
     function testFail_DuplicateAttestation() public {
-        attestEd.createSkill(
-            "Solidity Development",
-            "Advanced smart contract development",
-            3
-        );
-        
+        attestEd.createSkill("Solidity Development", "Advanced smart contract development", 3);
+
         attestEd.addReviewer(reviewer1);
 
         vm.prank(learner);
@@ -182,22 +157,18 @@ contract AttestEdTest is Test {
 
     function test_OnlyOwnerFunctions() public {
         address nonOwner = makeAddr("nonOwner");
-        
+
         vm.startPrank(nonOwner);
-        
+
         vm.expectRevert();
-        attestEd.createSkill(
-            "Solidity Development",
-            "Advanced smart contract development",
-            3
-        );
+        attestEd.createSkill("Solidity Development", "Advanced smart contract development", 3);
 
         vm.expectRevert();
         attestEd.addReviewer(reviewer1);
 
         vm.expectRevert();
         attestEd.removeReviewer(reviewer1);
-        
+
         vm.stopPrank();
     }
 
