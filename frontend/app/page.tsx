@@ -6,54 +6,59 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@radix-ui/react-progress";
 import { BookOpen, Youtube } from "lucide-react";
 import { useState } from "react";
+import  { useCourses } from "hooks/useCourses";
 
 const skills = [
-	{
-		id: 1,
-		name: "React Basics",
-		category: "Web Development",
-		difficulty: "Beginner",
-		progress: 30,
-		youtubeUrl: "https://www.youtube.com/watch?v=sa8iNdA_5OU",
-	},
-	{
-		id: 2,
-		name: "Machine Learning Fundamentals",
-		category: "Data Science",
-		difficulty: "Intermediate",
-		progress: 50,
-		youtubeUrl: "https://www.youtube.com/watch?v=i_LwzRVP7bg",
-	},
-	{
-		id: 3,
-		name: "Advanced JavaScript",
-		category: "Web Development",
-		difficulty: "Advanced",
-		progress: 70,
-		youtubeUrl: "https://www.youtube.com/watch?v=EgDmCbhmstU",
-	},
-	{
-		id: 4,
-		name: "UX Design Principles",
-		category: "Design",
-		difficulty: "Beginner",
-		progress: 20,
-		youtubeUrl: "https://www.youtube.com/watch?v=IPdsFaM7HCs",
-	},
-	{
-		id: 5,
-		name: "Cloud Computing Essentials",
-		category: "DevOps",
-		difficulty: "Intermediate",
-		progress: 40,
-		youtubeUrl: "https://www.youtube.com/watch?v=FjKBzaOgriA",
-	},
+    {
+        id: 1,
+        name: "React Basics",
+        category: "Web Development",
+        difficulty: "Beginner",
+        progress: 30,
+        youtubeUrl: "https://www.youtube.com/watch?v=sa8iNdA_5OU",
+    },
+    {
+        id: 2,
+        name: "Machine Learning Fundamentals",
+        category: "Data Science",
+        difficulty: "Intermediate",
+        progress: 50,
+        youtubeUrl: "https://www.youtube.com/watch?v=i_LwzRVP7bg",
+    },
+    {
+        id: 3,
+        name: "Advanced JavaScript",
+        category: "Web Development",
+        difficulty: "Advanced",
+        progress: 70,
+        youtubeUrl: "https://www.youtube.com/watch?v=EgDmCbhmstU",
+    },
+    {
+        id: 4,
+        name: "UX Design Principles",
+        category: "Design",
+        difficulty: "Beginner",
+        progress: 20,
+        youtubeUrl: "https://www.youtube.com/watch?v=IPdsFaM7HCs",
+    },
+    {
+        id: 5,
+        name: "Cloud Computing Essentials",
+        category: "DevOps",
+        difficulty: "Intermediate",
+        progress: 40,
+        youtubeUrl: "https://www.youtube.com/watch?v=FjKBzaOgriA",
+    },
 ];
 
 export default function SkillsDiscoveryPage() {
-	const [searchTerm, setSearchTerm] = useState("");
-	const [selectedCategory, setSelectedCategory] = useState("all");
-	const [selectedDifficulty, setSelectedDifficulty] = useState("all");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("all");
+    const [selectedDifficulty, setSelectedDifficulty] = useState("all");
+
+    const { courses } = useCourses();
+
+    console.log("courses", courses);
 
     const filteredSkills = skills.filter(
         (skill) =>
