@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import type { Question } from "@/lib/schemas";
@@ -40,6 +42,7 @@ const QuestionCard: React.FC<{
 			<div className="grid grid-cols-1 gap-4">
 				{question.options.map((option, index) => (
 					<Button
+						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 						key={index}
 						variant={
 							selectedAnswer === answerLabels[index] ? "secondary" : "outline"

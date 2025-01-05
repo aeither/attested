@@ -1,6 +1,5 @@
 "use client";
 
-import Quiz from "@/components/quiz";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -14,15 +13,31 @@ import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
 import type { questionsSchema } from "@/lib/schemas";
 import { Loader2 } from "lucide-react";
-import { useQueryState } from "nuqs";
-import { useState } from "react";
+import dynamic from "next/dynamic";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { toast } from "sonner";
 import type { z } from "zod";
 import { generateQuizTitle } from "../actions/ai";
 
-export default function QuizPage() {
-	const [description] = useQueryState("description");
-	const [text, setText] = useState<string>(description ?? "");
+const Quiz = dynamic(() => import("@/components/quiz"), {
+	ssr: false,
+});
+
+export default function Page() {
+  return (
+    <Suspense>
+      <SearchParamsComponent />
+    </Suspense>
+  )
+}
+
+function SearchParamsComponent() {
+	const searchParams = useSearchParams();
+	const router = useRouter();
+	const initialDescription = searchParams.get("description") ?? "";
+
+	const [text, setText] = useState<string>(initialDescription);
 	const [questions, setQuestions] = useState<z.infer<typeof questionsSchema>>(
 		[],
 	);
@@ -32,6 +47,17 @@ export default function QuizPage() {
 	const [partialQuestions, setPartialQuestions] = useState<
 		z.infer<typeof questionsSchema>
 	>([]);
+
+	// Update URL when text changes
+	useEffect(() => {
+		const params = new URLSearchParams(searchParams);
+		if (text) {
+			params.set("description", text);
+		} else {
+			params.delete("description");
+		}
+		router.replace(`?${params.toString()}`);
+	}, [text, router, searchParams]);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -72,6 +98,7 @@ export default function QuizPage() {
 		setQuestions([]);
 		setProgress(0);
 		setPartialQuestions([]);
+		router.replace(""); // Clear URL params
 	};
 
 	return (
