@@ -17,6 +17,7 @@ import {
     useSkill,
     useSkillCount,
 } from "@/hooks/use-contract";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { BaseError } from "viem";
 import { useAccount } from "wagmi";
@@ -129,42 +130,42 @@ function MultipleSkillsComponent({ skillIds }: { skillIds: bigint[] }) {
 }
 
 function ReviewerComponent() {
-    const [reviewerAddress, setReviewerAddress] = useState<string>("");
-    const { addReviewer, isPending: isAddingReviewer } = useAddReviewer();
+	const [reviewerAddress, setReviewerAddress] = useState<string>("");
+	const { addReviewer, isPending: isAddingReviewer } = useAddReviewer();
 
-    const handleAddReviewer = async () => {
-        try {
-            await addReviewer({
-                reviewer: reviewerAddress as `0x${string}`,
-            });
-        } catch (error) {
-            console.error("Failed to add reviewer:", error);
-        }
-    };
+	const handleAddReviewer = async () => {
+		try {
+			await addReviewer({
+				reviewer: reviewerAddress as `0x${string}`,
+			});
+		} catch (error) {
+			console.error("Failed to add reviewer:", error);
+		}
+	};
 
-    return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Manage Reviewers</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <div className="flex gap-2">
-                    <Input
-                        placeholder="Reviewer Address (0x...)"
-                        value={reviewerAddress}
-                        onChange={(e) => setReviewerAddress(e.target.value)}
-                    />
-                    <Button
-                        onClick={handleAddReviewer}
-                        disabled={isAddingReviewer}
-                        variant="outline"
-                    >
-                        {isAddingReviewer ? "Adding..." : "Add Reviewer"}
-                    </Button>
-                </div>
-            </CardContent>
-        </Card>
-    );
+	return (
+		<Card>
+			<CardHeader>
+				<CardTitle>Manage Reviewers</CardTitle>
+			</CardHeader>
+			<CardContent className="space-y-4">
+				<div className="flex gap-2">
+					<Input
+						placeholder="Reviewer Address (0x...)"
+						value={reviewerAddress}
+						onChange={(e) => setReviewerAddress(e.target.value)}
+					/>
+					<Button
+						onClick={handleAddReviewer}
+						disabled={isAddingReviewer}
+						variant="outline"
+					>
+						{isAddingReviewer ? "Adding..." : "Add Reviewer"}
+					</Button>
+				</div>
+			</CardContent>
+		</Card>
+	);
 }
 
 function AttestationComponent({ skillId }: { skillId: bigint }) {
@@ -176,8 +177,10 @@ function AttestationComponent({ skillId }: { skillId: bigint }) {
 	});
 	const { requestAttestation, isPending: isRequesting } =
 		useRequestAttestation();
-	const { provideAttestation, isPending: isProviding } = useProvideAttestation();
+	const { provideAttestation, isPending: isProviding } =
+		useProvideAttestation();
 	const [learnerAddress, setLearnerAddress] = useState<string>("");
+	const router = useRouter();
 
 	if (!address) return <Alert>Please connect your wallet</Alert>;
 	if (isPending) return <LoadingSkeleton />;
@@ -245,6 +248,16 @@ function AttestationComponent({ skillId }: { skillId: bigint }) {
 						className="w-full"
 					>
 						{isProviding ? "Providing..." : "Provide Attestation"}
+					</Button>
+				</div>
+				<div className="space-y-2">
+					<Button
+						onClick={() => router.push("/attest")}
+						disabled={isProviding}
+						variant="outline"
+						className="w-full"
+					>
+						Open Reviewer Page
 					</Button>
 				</div>
 			</CardContent>

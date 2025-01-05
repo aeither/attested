@@ -211,7 +211,7 @@ export default function Quiz({
 												<FileText className="mr-2 h-4 w-4" /> Try Another One
 											</Button>
 											<Button
-												onClick={() => router.push("/attest")}
+												onClick={() => router.push("/contract")}
 												variant="secondary"
 												className="bg-secondary hover:bg-secondary/90 w-full"
 											>
