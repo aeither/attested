@@ -1,18 +1,18 @@
 "use client";
 
 import { Book, BookOpen, Gauge, Layout } from "lucide-react";
-
+import Image from 'next/image';
 import {
-    Sidebar,
-    SidebarContent,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarGroupLabel,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-    SidebarRail,
+	Sidebar,
+	SidebarContent,
+	SidebarGroup,
+	SidebarGroupContent,
+	SidebarGroupLabel,
+	SidebarHeader,
+	SidebarMenu,
+	SidebarMenuButton,
+	SidebarMenuItem,
+	SidebarRail,
 } from "@/components/ui/sidebar";
 
 const categories = [
@@ -41,10 +41,11 @@ export function CourseSidebar() {
 		<Sidebar className="border-r-0 bg-blue-50 dark:bg-blue-950">
 			<SidebarHeader className="border-b border-blue-100 dark:border-blue-900">
 				<div className="px-2 py-4">
-					<h2 className="px-4 text-lg font-semibold tracking-tight text-blue-900 dark:text-blue-50">
-                        AttestEd
-					</h2>
+					<a href="/">
+						<Image src="/attested.jpg" alt="AttestEd" width={500} height={300} className="w-full h-auto" />
+					</a>
 				</div>
+
 			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>
@@ -64,6 +65,10 @@ export function CourseSidebar() {
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
+				{
+					/*
+
+
 				<SidebarGroup>
 					<SidebarGroupLabel className="text-blue-900 dark:text-blue-100">
 						Difficulty
@@ -80,6 +85,8 @@ export function CourseSidebar() {
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
+									*/
+								}
 			</SidebarContent>
 			<SidebarRail />
 		</Sidebar>

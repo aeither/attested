@@ -10,6 +10,12 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
+			azulMarino: '#003366',  // Azul Marino
+			cian: '#00B5E2',        // Cian
+			blanco: '#FFFFFF',      // Blanco
+			verdeEsmeralda: '#2ECC71', // Verde Esmeralda
+			grisClaro: '#F2F4F5',   // Gris Claro
+			amarilloMostaza: '#F1C40F', // Amarillo Mostaza
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {

@@ -55,65 +55,60 @@ export default function SkillsDiscoveryPage() {
 	const [selectedCategory, setSelectedCategory] = useState("all");
 	const [selectedDifficulty, setSelectedDifficulty] = useState("all");
 
-	const filteredSkills = skills.filter(
-		(skill) =>
-			skill.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-			(selectedCategory === "all" ||
-				skill.category.toLowerCase().replace(" ", "-") === selectedCategory) &&
-			(selectedDifficulty === "all" ||
-				skill.difficulty.toLowerCase() === selectedDifficulty),
-	);
+    const filteredSkills = skills.filter(
+        (skill) =>
+            skill.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            (selectedCategory === "all" ||
+                skill.category.toLowerCase().replace(" ", "-") === selectedCategory) &&
+            (selectedDifficulty === "all" ||
+                skill.difficulty.toLowerCase() === selectedDifficulty),
+    );
 
-	return (
-		<>
-			<Header searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+    return (
+        <>
+            <Header searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
-			<div className="flex flex-1">
-				<main className="flex-1 p-6 overflow-y-auto">
-					<div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-						{filteredSkills.map((skill) => (
-							<div
-								key={skill.id}
-								className="bg-card text-card-foreground rounded-lg shadow-md overflow-hidden flex flex-col h-full"
-							>
-								<div className="p-4 flex flex-col h-full">
-									<div className="flex-grow">
-										<h3 className="text-lg font-semibold mb-2">{skill.name}</h3>
-										<div className="flex items-center gap-2 mb-2">
-											<Badge variant="secondary">{skill.category}</Badge>
-											<Badge variant="outline">{skill.difficulty}</Badge>
-										</div>
-										<Progress value={skill.progress} className="mb-2" />
-										<p className="text-sm text-muted-foreground mb-4">
-											{skill.progress}% complete
-										</p>
-									</div>
-									<div className="flex items-center gap-2 mt-auto">
-										<a
-											href={`/submit?course=${encodeURIComponent(skill.name)}`}
-										>
-											<Button variant="outline" className="w-full">
-												<BookOpen className="mr-2 h-4 w-4" />
-												Start Learning
-											</Button>
-										</a>
-										<Button variant="outline" size="icon" asChild>
-											<a
-												href={skill.youtubeUrl}
-												target="_blank"
-												rel="noopener noreferrer"
-											>
-												<Youtube className="h-4 w-4" />
-												<span className="sr-only">Watch on YouTube</span>
-											</a>
-										</Button>
-									</div>
-								</div>
-							</div>
-						))}
-					</div>
-				</main>
-			</div>
-		</>
-	);
+            <div className="flex flex-1">
+                <main className="flex-1 p-6 overflow-y-auto">
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {filteredSkills.map((skill) => (
+                            <div
+                                key={skill.id}
+                                className="bg-card text-card-foreground rounded-lg shadow-md overflow-hidden flex flex-col h-full"
+                            >
+                                <div className="p-4 flex flex-col h-full">
+                                    <div className="flex-grow">
+                                        <h3 className="text-lg font-semibold mb-2">{skill.name}</h3>
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <Badge variant="secondary">{skill.category}</Badge>
+                                            <Badge variant="outline">{skill.difficulty}</Badge>
+                                        </div>
+                                        <div className="relative w-full h-4 bg-gray-200 rounded-full overflow-hidden mb-4">
+                                            <div
+                                                className="absolute top-0 left-0 h-full bg-amarilloMostaza"
+                                                style={{ width: `${skill.progress}%` }}
+                                            ></div>
+                                        </div>
+                                        <p className="text-sm text-muted-foreground">
+                                            {skill.progress}% complete
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center gap-2 mt-auto">
+                                        <a
+                                            href={`/submit?course=${encodeURIComponent(skill.name)}`}
+                                        >
+                                            <Button variant="outline" className="w-full">
+                                                <BookOpen className="mr-2 h-4 w-4" />
+                                                Start Learning
+                                            </Button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </main>
+            </div>
+        </>
+    );
 }
