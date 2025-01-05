@@ -1,5 +1,12 @@
 # AttestEd
 
+
+## Demo
+
+https://youtu.be/4Bbpen1Lg0E
+
+## Overview
+
 AttestEd Self-learning NFT accreditation validated by community
 
 THE PROBLEM • Lack of Recognized Proof: Informal learning (YouTube, coding bootcamps) often lacks accredited proof. • Trust Issues: Employers and other parties may not trust self-reported skills. • Barrier to Skill Verification: Current certification systems can be costly or inaccessible.

@@ -106,18 +106,16 @@ function SearchParamsComponent() {
 			{/* YouTube Section */}
 			<Card className="mb-8">
 				<CardHeader>
-					<CardTitle>How To Create an ERC-1155 Contract</CardTitle>
-					<CardDescription>
-						The Swiss Army Knife of Ethereum Tokens
-					</CardDescription>
+					<CardTitle>React Tutorial for Beginners</CardTitle>
+					<CardDescription>Master React 18 with TypeScript!</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<div className="aspect-video rounded-lg overflow-hidden bg-muted">
 						<iframe
 							width="100%"
 							height="100%"
-							src="https://www.youtube.com/embed/mM77Ta-g7Hs"
-							title="How To Create an ERC-1155 Contract"
+							src="https://www.youtube.com/embed/SqcY0GlETPk"
+							title="Master React 18 with TypeScript!"
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 							allowFullScreen
 							className="border-0"

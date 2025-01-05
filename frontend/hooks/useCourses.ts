@@ -1,6 +1,5 @@
 // hooks/useCourses.ts
 import { useReadContract } from 'wagmi';
-import { ethers } from 'ethers';
 
 const contractAddress = '0x693e77f81fc8A743E00190f362b8b253f6666dA0';
 const contractABI = [
@@ -298,6 +297,8 @@ export function useCourses() {
         functionName: 'getCourse',
         args: [1],
     });
+    console.log("🚀 ~ useCourses ~ course1:", course1)
+    
     const { data: course2 } = useReadContract({
         address: contractAddress,
         abi: contractABI,
