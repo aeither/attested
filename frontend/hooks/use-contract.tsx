@@ -204,3 +204,64 @@ export function useRequestAttestation() {
 	};
 }
 
+export function useAddReviewer() {
+	const { writeContract, writeContractAsync, ...rest } = useWriteContract();
+
+	const addReviewer = (params: { reviewer: `0x${string}` }) => {
+		return writeContract({
+			address: ATTESTED_ADDRESS,
+			abi: ATTESTED_ABI,
+			functionName: "addReviewer",
+			args: [params.reviewer],
+		});
+	};
+
+	const addReviewerAsync = async (params: { reviewer: `0x${string}` }) => {
+		return writeContractAsync({
+			address: ATTESTED_ADDRESS,
+			abi: ATTESTED_ABI,
+			functionName: "addReviewer",
+			args: [params.reviewer],
+		});
+	};
+
+	return {
+		addReviewer,
+		addReviewerAsync,
+		...rest,
+	};
+}
+
+export function useProvideAttestation() {
+	const { writeContract, writeContractAsync, ...rest } = useWriteContract();
+
+	const provideAttestation = (params: {
+		learner: `0x${string}`;
+		skillId: bigint;
+	}) => {
+		return writeContract({
+			address: ATTESTED_ADDRESS,
+			abi: ATTESTED_ABI,
+			functionName: "provideAttestation",
+			args: [params.learner, params.skillId],
+		});
+	};
+
+	const provideAttestationAsync = async (params: {
+		learner: `0x${string}`;
+		skillId: bigint;
+	}) => {
+		return writeContractAsync({
+			address: ATTESTED_ADDRESS,
+			abi: ATTESTED_ABI,
+			functionName: "provideAttestation",
+			args: [params.learner, params.skillId],
+		});
+	};
+
+	return {
+		provideAttestation,
+		provideAttestationAsync,
+		...rest,
+	};
+}

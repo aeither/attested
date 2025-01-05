@@ -5,11 +5,14 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
+    useAddReviewer,
     useAttestationStatus,
     useCreateSkill,
     useMultipleSkills,
+    useProvideAttestation,
     useRequestAttestation,
     useSkill,
     useSkillCount,
@@ -125,6 +128,45 @@ function MultipleSkillsComponent({ skillIds }: { skillIds: bigint[] }) {
 	);
 }
 
+function ReviewerComponent() {
+    const [reviewerAddress, setReviewerAddress] = useState<string>("");
+    const { addReviewer, isPending: isAddingReviewer } = useAddReviewer();
+
+    const handleAddReviewer = async () => {
+        try {
+            await addReviewer({
+                reviewer: reviewerAddress as `0x${string}`,
+            });
+        } catch (error) {
+            console.error("Failed to add reviewer:", error);
+        }
+    };
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>Manage Reviewers</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <div className="flex gap-2">
+                    <Input
+                        placeholder="Reviewer Address (0x...)"
+                        value={reviewerAddress}
+                        onChange={(e) => setReviewerAddress(e.target.value)}
+                    />
+                    <Button
+                        onClick={handleAddReviewer}
+                        disabled={isAddingReviewer}
+                        variant="outline"
+                    >
+                        {isAddingReviewer ? "Adding..." : "Add Reviewer"}
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
 function AttestationComponent({ skillId }: { skillId: bigint }) {
 	const { address } = useAccount();
 	const { data, isPending, error } = useAttestationStatus({
@@ -134,6 +176,8 @@ function AttestationComponent({ skillId }: { skillId: bigint }) {
 	});
 	const { requestAttestation, isPending: isRequesting } =
 		useRequestAttestation();
+	const { provideAttestation, isPending: isProviding } = useProvideAttestation();
+	const [learnerAddress, setLearnerAddress] = useState<string>("");
 
 	if (!address) return <Alert>Please connect your wallet</Alert>;
 	if (isPending) return <LoadingSkeleton />;
@@ -149,6 +193,17 @@ function AttestationComponent({ skillId }: { skillId: bigint }) {
 			});
 		} catch (error) {
 			console.error("Failed to request attestation:", error);
+		}
+	};
+
+	const handleProvideAttestation = async () => {
+		try {
+			await provideAttestation({
+				learner: learnerAddress as `0x${string}`,
+				skillId,
+			});
+		} catch (error) {
+			console.error("Failed to provide attestation:", error);
 		}
 	};
 
@@ -177,6 +232,21 @@ function AttestationComponent({ skillId }: { skillId: bigint }) {
 				>
 					{isRequesting ? "Requesting..." : "Request Attestation"}
 				</Button>
+				<div className="space-y-2">
+					<Input
+						placeholder="Learner Address (0x...)"
+						value={learnerAddress}
+						onChange={(e) => setLearnerAddress(e.target.value)}
+					/>
+					<Button
+						onClick={handleProvideAttestation}
+						disabled={isProviding}
+						variant="outline"
+						className="w-full"
+					>
+						{isProviding ? "Providing..." : "Provide Attestation"}
+					</Button>
+				</div>
 			</CardContent>
 		</Card>
 	);
@@ -203,9 +273,9 @@ export default function ContractPage() {
 	return (
 		<>
 			<Header searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-
 			<div className="container mx-auto p-4 space-y-8">
 				<h1 className="text-3xl font-bold">AttestEd Dashboard</h1>
+				<ReviewerComponent />
 				<SkillComponent />
 				<h2 className="text-2xl font-semibold">All Skills</h2>
 				<MultipleSkillsComponent skillIds={skillIds} />
