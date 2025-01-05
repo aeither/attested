@@ -220,7 +220,7 @@ function AttestationComponent({ skillId }: { skillId: bigint }) {
 					<p className="text-sm">
 						Attestation Count: {attestationCount?.toString()}
 					</p>
-					<Badge variant={isCertified ? "success" : "secondary"}>
+					<Badge variant={isCertified ? "default" : "secondary"}>
 						{isCertified ? "Certified" : "Not Certified"}
 					</Badge>
 					{isCertified && (

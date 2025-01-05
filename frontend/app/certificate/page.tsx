@@ -3,36 +3,36 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
 } from "@/components/ui/card";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
 } from "@/components/ui/table";
 import {
-    AlertCircle,
-    CheckCircle,
-    Download,
-    ExternalLink,
-    Share2,
-    User2Icon,
+	AlertCircle,
+	CheckCircle,
+	Download,
+	ExternalLink,
+	Share2,
+	User2Icon,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -86,12 +86,14 @@ export default function CertificateManagementPage() {
 		certificates[0],
 	);
 
-	const handleShare = (certificate) => {
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	const handleShare = (certificate: any) => {
 		// Implement sharing functionality
 		console.log("Sharing certificate:", certificate.name);
 	};
 
-	const handleDownload = (certificate) => {
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	const handleDownload = (certificate: any) => {
 		// Implement download functionality
 		console.log("Downloading certificate:", certificate.name);
 	};
@@ -128,12 +130,12 @@ export default function CertificateManagementPage() {
 										</p>
 										<div className="mt-2">
 											{cert.verified ? (
-												<Badge variant="success">
+												<Badge variant="default">
 													<CheckCircle className="w-3 h-3 mr-1" />
 													Verified
 												</Badge>
 											) : (
-												<Badge variant="warning">
+												<Badge variant="default">
 													<AlertCircle className="w-3 h-3 mr-1" />
 													Unverified
 												</Badge>
@@ -158,8 +160,7 @@ export default function CertificateManagementPage() {
 							<img
 								src={selectedCertificate.imageUrl}
 								alt={selectedCertificate.name}
-								layout="fill"
-								objectFit="cover"
+								style={{ objectFit: 'cover' }}
 							/>
 						</div>
 						<div>
@@ -187,12 +188,12 @@ export default function CertificateManagementPage() {
 						<div>
 							<p className="text-sm font-medium">Verification Status</p>
 							{selectedCertificate.verified ? (
-								<Badge variant="success">
+								<Badge variant="default">
 									<CheckCircle className="w-3 h-3 mr-1" />
 									Verified
 								</Badge>
 							) : (
-								<Badge variant="warning">
+								<Badge variant="default">
 									<AlertCircle className="w-3 h-3 mr-1" />
 									Unverified
 								</Badge>
@@ -247,7 +248,8 @@ export default function CertificateManagementPage() {
 									</TableHeader>
 									<TableBody>
 										{selectedCertificate.transactionHistory.map((tx, index) => (
-											<TableRow key={index}>
+											// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+<TableRow key={index}>
 												<TableCell>{tx.date}</TableCell>
 												<TableCell>{tx.action}</TableCell>
 												<TableCell>
